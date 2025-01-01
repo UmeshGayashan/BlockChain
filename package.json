@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch dev -e  js dev/api.js",
+    "node1": "nodemon --watch dev -e  js dev/api.js 3001",
+    "node2": "nodemon --watch dev -e  js dev/api.js 3002",
+    "node3": "nodemon --watch dev -e  js dev/api.js 3003",
+    "node4": "nodemon --watch dev -e  js dev/api.js 3004",
+    "node5": "nodemon --watch dev -e  js dev/api.js 3005",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
