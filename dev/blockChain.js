@@ -40,7 +40,7 @@ BlockChain.prototype.createNewTransaction = function(amount, sender, recipient) 
 
     this.pendingTransactions.push(newTransaction);
 
-    return this.getLastBlock()['index'] + 1;
+    return this.getLastBlock()['index'] + 1; // New Transaction will be added to the next(This) block
 }
 
 BlockChain.prototype.hashBlock = function(previousBlockHash, currentBlockData, nonce) {
