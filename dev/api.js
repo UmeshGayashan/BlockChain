@@ -90,7 +90,13 @@ app.post('/register-node', function (req, res) {
 
 // Register multiple nodes at once
 app.post('/register-nodes-bulk', function (req, res) {
-
+  const allNetworkNodes = req.body.allNetworkNodes;
+  allNetworkNodes.forEach(networkNodeUrl => {
+    const nodeNotAlreadyPresent = dummyCoin.networkNodes.indexOf(networkNodeUrl) === -1;
+    const notCurrentNode = dummyCoin.currentNodeUrl !== networkNodeUrl;
+    if (nodeNotAlreadyPresent && notCurrentNode) dummyCoin.networkNodes.push(networkNodeUrl);
+  });
+  res.json({ note: 'Bulk registration successful.' });
 })
 
 app.listen(port, function () {
