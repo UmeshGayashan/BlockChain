@@ -6,6 +6,7 @@ function BlockChain() {
     this.pendingTransactions = [];
 
     this.currentNodeUrl = currentNodeUrl;
+    this.networkNodes = [];  // All other nodes in the network
 
     // Genesis block
     this.createNewBlock(100, '0', '0');
