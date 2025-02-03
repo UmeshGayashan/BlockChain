@@ -26,6 +26,10 @@ app.post('/transaction', function (req, res) {
   res.json({ note: `Transaction will be added in block ${blockIndex}.` });
 })
 
+app.post('/transaction/broadcast', function(req,res){
+  const newTransaction = dummyCoin.createNewTransaction
+})
+
 app.get('/mine', function (req, res) {
   const lastBlock = dummyCoin.getLastBlock();
   const previousBlockHash = lastBlock['hash'];
