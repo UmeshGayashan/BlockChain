@@ -61,9 +61,39 @@ app.get('/mine', function (req, res) {
   const blockHash = dummyCoin.hashBlock(previousBlockHash, currentBlockData, nonce);
 
   const newBlock = dummyCoin.createNewBlock(nonce, previousBlockHash, blockHash);
-  res.json({
-    note: 'New block mined successfully',
-    block: newBlock
+
+  const requestPromises = [];
+  dummyCoin.networkNodes.forEach(networkNodeUrl => {
+    const requestOptions = {
+      uri: networkNodeUrl + '/receive-new-block',
+      method: 'POST',
+      body: { newBlock: newBlock },
+      json: true
+    };
+
+    requestPromises.push(rp(requestOptions));
+  });
+ 
+  Promise.all(requestPromises)
+  .then(data => { 
+    const requestOptions = {
+      uri: dummyCoin.currentNodeUrl + 'transaction/broadcast',
+      method: 'POST',
+      body: {
+        amount: 12.5,
+        sender: '00',
+        recipient: nodeAddress
+      },
+      json: true
+    };
+
+    return rp(requestOptions);
+  })
+  .then(data => {
+    res.json({
+      note: 'New block mined & broadcast successfully',
+      block: newBlock
+    });
   });
 })
 
