@@ -27,7 +27,25 @@ app.post('/transaction', function (req, res) {
 })
 
 app.post('/transaction/broadcast', function(req,res){
-  const newTransaction = dummyCoin.createNewTransaction
+  const newTransaction = dummyCoin.createNewTransaction(req.body.amount, req.body.sender, req.body.recipient);
+  dummyCoin.addTransactionToPendingTransaction(newTransaction);
+
+  const requestPromises = [];
+  dummyCoin.networkNodes.forEach(networkNodeUrl => {
+    const requestOptions = {
+      uri: networkNodeUrl + '/transaction',
+      method: 'POST',
+      body: newTransaction,
+      json: true
+    };
+
+    requestPromises.push(rp(requestOptions));
+  });
+
+  Promise.all(requestPromises)
+    .then(data => {
+      res.json({ note: 'Transaction created and broadcast successfully.' });
+    });
 })
 
 app.get('/mine', function (req, res) {
